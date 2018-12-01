@@ -1,5 +1,7 @@
 const fs = require('fs');
 
+const elemInArray = (arr, elem): boolean => arr.indexOf(elem) !== -1;
+
 const run = async () => {
   console.log('Starting up');
   const startingFrequency = 0;
@@ -8,12 +10,34 @@ const run = async () => {
       console.error('ERROR', err);
     }
 
-    const splittedInput = contents.split('\n').map(x => parseInt(x));
+    const splittedInput: number[] = contents.split('\n').map(x => parseInt(x));
     const resultingFrequency = splittedInput.reduce(
       (a, b) => a + b,
       startingFrequency
     );
+
+    // Part 1
     console.log(resultingFrequency);
+
+    //Part 2 What is the first frequency your device reaches twice?
+
+    let result = null;
+
+    const frequencyHistory: number[] = [];
+    let currentFrequency: number = startingFrequency;
+    let i = 0;
+    while (!result) {
+      currentFrequency =
+        currentFrequency + splittedInput[i % splittedInput.length];
+      if (elemInArray(frequencyHistory, currentFrequency)) {
+        console.log('Found duplicate', currentFrequency, i);
+        result = currentFrequency;
+        break;
+      }
+      frequencyHistory.push(currentFrequency);
+      i++;
+    }
+    console.log(result);
   });
 };
 
