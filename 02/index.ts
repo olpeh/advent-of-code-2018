@@ -12,11 +12,8 @@ const countLetterOccurences = str => {
   return occurenceMap;
 };
 
-const containsAnyLetterNTimes = (n: number) => occurenceMap => {
-  const arr = Array.from(occurenceMap.values());
-  const arr2 = arr.filter(x => x === n);
-  return arr2.length > 0;
-};
+const containsAnyLetterNTimes = (n: number) => occurenceMap =>
+  Array.from(occurenceMap.values()).filter(x => x === n).length > 0;
 
 const containsAnyLetter2Times = containsAnyLetterNTimes(2);
 const containsAnyLetter3Times = containsAnyLetterNTimes(3);
@@ -35,6 +32,45 @@ const part1 = (input: string[]) => {
   return checksum;
 };
 
+const countStrOccurences = (strArr: string[]) => {
+  const occurenceMap = new Map<string, number>();
+  strArr.forEach(str => {
+    if (occurenceMap.get(str)) {
+      occurenceMap.set(str, occurenceMap.get(str) + 1);
+    } else {
+      occurenceMap.set(str, 1);
+    }
+  });
+  return occurenceMap;
+};
+
+const findStringsWhereOnlyDiffInPosition = (input, position) => {
+  const occurences = countStrOccurences(
+    input.map(x => `${x.substring(0, position)}${x.substring(position + 1)}`)
+  );
+
+  const result: string[] = [];
+  for (var [key, value] of occurences.entries()) {
+    if (value > 1) {
+      result.push(key);
+    }
+  }
+  return result;
+};
+
+const part2 = (input: string[]) => {
+  // assuming all of them are equally long
+  const length = input[0].length;
+
+  for (let i = 0; i < length; i++) {
+    const found = findStringsWhereOnlyDiffInPosition(input, i);
+    if (found.length) {
+      console.log(found);
+    }
+  }
+  return;
+};
+
 const run = async () => {
   console.log('Starting up');
   await fs.readFile('./inputs/02.txt', 'utf8', (err, contents) => {
@@ -44,6 +80,7 @@ const run = async () => {
 
     const splittedInput: string[] = contents.split('\n').filter(x => x !== '');
     console.log(part1(splittedInput));
+    console.log(part2(splittedInput));
   });
 };
 
