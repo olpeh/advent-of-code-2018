@@ -2,9 +2,8 @@
   "name": "advent-of-code-2018",
   "version": "1.0.0",
   "description": "My solutions to the Advent of Code 2018",
-  "main": "01/index.ts",
   "scripts": {
-    "start": "ts-node 01/index.ts"
+    "start": "ts-node 02/index.ts"
   },
   "repository": {
     "type": "git",

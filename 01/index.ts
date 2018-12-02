@@ -1,6 +1,5 @@
+import { elemInArray } from '../utils/arrays';
 const fs = require('fs');
-
-const elemInArray = (arr, elem): boolean => arr.indexOf(elem) !== -1;
 
 const run = async () => {
   console.log('Starting up');
