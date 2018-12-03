@@ -86,6 +86,51 @@ const day03part1 = input => {
   return doubleClaimed.length;
 };
 
+const getNeverDoubleClaimed = (claims: Claim[], doubleClaimed: string[]) => {
+  // LOL a horribly perfroming approach
+  let result: number = -1;
+
+  for (let k = 0; k < claims.length; k++) {
+    const claim = claims[k];
+    let overlapping = true;
+    let skip = false;
+    for (
+      let x = claim.offset.left;
+      x < claim.offset.left + claim.size.width;
+      x++
+    ) {
+      for (
+        let y = claim.offset.top;
+        y < claim.offset.top + claim.size.height;
+        y++
+      ) {
+        const matchingIndex = doubleClaimed.indexOf(`${x},${y}`);
+        if (matchingIndex === -1) {
+          overlapping = false;
+        } else {
+          overlapping = true;
+          skip = true;
+          continue;
+        }
+      }
+    }
+    if (!skip && !overlapping) {
+      result = claim.id;
+      break;
+    }
+  }
+
+  return result;
+};
+
+const day03part2 = input => {
+  const claims = input.map(parseInputRow);
+  const claimMap = createClaimMap(claims);
+  const doubleClaimed = hasBeenClaimedTwiceOrMore(claimMap);
+  const neverDoubleClaimed = getNeverDoubleClaimed(claims, doubleClaimed);
+  return neverDoubleClaimed;
+};
+
 const run03 = async () => {
   console.log('Starting up');
   await fs.readFile('./inputs/03.txt', 'utf8', (err, contents) => {
@@ -95,6 +140,7 @@ const run03 = async () => {
 
     const splittedInput: string[] = contents.split('\n').filter(x => x !== '');
     console.log(day03part1(splittedInput));
+    console.log(day03part2(splittedInput));
   });
 };
 
