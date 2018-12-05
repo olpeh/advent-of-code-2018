@@ -142,6 +142,30 @@ const day04part1 = input => {
   return mostAsleepDuringMinute * guardWhoSleepsMost;
 };
 
+const day04part2 = input => {
+  // RANDOM ORDER
+  // [1518-04-15 00:00] Guard #179 begins shift
+  // [1518-09-24 23:59] Guard #2467 begins shift
+  // [1518-09-21 00:49] wakes up
+  // [1518-09-21 00:19] falls asleep
+  // [1518-07-17 00:51] wakes up
+  const sortedRecords = input
+    .map(parseInputRowToObject)
+    .sort(compareGuardRecords);
+  const guardsAsleepMinutes = getGuardsAsleepMinutes(sortedRecords);
+
+  let maxMinute, maxValue, guardId;
+  for (var [key, value] of guardsAsleepMinutes.entries()) {
+    const max = Math.max.apply(null, value);
+    if (maxMinute === undefined || max > maxValue) {
+      guardId = key;
+      maxValue = max;
+      maxMinute = getGuardMostAsleepDuringMinute(value);
+    }
+  }
+  return guardId * maxMinute;
+};
+
 const run04 = async () => {
   console.log('Starting up');
   await fs.readFile('./inputs/04.txt', 'utf8', (err, contents) => {
@@ -153,6 +177,7 @@ const run04 = async () => {
 
     //What is the ID of the guard you chose multiplied by the minute you chose?
     console.log(day04part1(splittedInput));
+    console.log(day04part2(splittedInput));
   });
 };
 
