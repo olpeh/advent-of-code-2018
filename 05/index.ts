@@ -21,8 +21,50 @@ const day05part1 = input => {
     }
     done = processed.length === oldLength;
   }
-  console.log(processed);
   return processed.length;
+};
+
+const day05part2 = input => {
+  const letters = [
+    'a',
+    'b',
+    'c',
+    'd',
+    'e',
+    'f',
+    'g',
+    'h',
+    'i',
+    'j',
+    'k',
+    'l',
+    'm',
+    'n',
+    'o',
+    'p',
+    'q',
+    'r',
+    's',
+    't',
+    'u',
+    'v',
+    'w',
+    'x',
+    'y',
+    'z'
+  ];
+  let minLength;
+
+  for (const letter of letters) {
+    const re = new RegExp(letter, 'gi');
+    const inputWithoutLetter = input.replace(re, '');
+    const result = day05part1(inputWithoutLetter);
+    if (minLength === undefined || result < minLength) {
+      minLength = result;
+    }
+    console.log({ letter }, { result }, { minLength });
+  }
+  return minLength;
 };
 
 const run05 = async () => {
@@ -33,6 +75,7 @@ const run05 = async () => {
     }
 
     console.log(day05part1(contents));
+    console.log(day05part2(contents));
   });
 };
 
